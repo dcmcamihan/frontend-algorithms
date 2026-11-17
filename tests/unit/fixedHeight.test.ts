@@ -20,6 +20,13 @@ describe('fixedHeightModel', () => {
     expect(() => fixedHeightModel(-1, 10)).toThrow(RangeError)
     expect(() => fixedHeightModel(1.5, 10)).toThrow(RangeError)
   })
+
+  it('rejects non-finite values', () => {
+    expect(() => fixedHeightModel(10, Infinity)).toThrow(RangeError)
+    expect(() => fixedHeightModel(10, NaN)).toThrow(RangeError)
+    expect(() => fixedHeightModel(Infinity, 10)).toThrow(RangeError)
+    expect(() => fixedHeightModel(NaN, 10)).toThrow(RangeError)
+  })
 })
 
 describe('computeRange with fixed heights', () => {
@@ -83,5 +90,33 @@ describe('computeRange with fixed heights', () => {
       expect(r.start).toBeLessThanOrEqual(firstVisible)
       expect(r.end).toBeGreaterThanOrEqual(Math.min(999, lastVisible))
     }
+  })
+
+  it('does not produce NaN from bad scroll, viewport or overscan values', () => {
+    expect(computeRange(m, NaN, 500, none)).toMatchObject({ start: 0, end: 9 })
+    expect(computeRange(m, Infinity, 500, none)).toMatchObject({ start: 0, end: 9 })
+    expect(computeRange(m, 0, NaN, none)).toMatchObject({ start: -1, end: -1 })
+    expect(computeRange(m, 0, Infinity, none)).toMatchObject({ start: -1, end: -1 })
+    const r = computeRange(m, 25_000, 500, { before: NaN, after: Infinity })
+    expect(r).toMatchObject({ start: 500, end: 509 })
+    expect(computeRange(m, 25_000, 500, { before: 2.7, after: -3 })).toMatchObject({
+      start: 498,
+      end: 509,
+    })
+  })
+})
+
+describe('staticOverscan', () => {
+  it('rejects non-finite or negative values', () => {
+    expect(() => staticOverscan(NaN)).toThrow(RangeError)
+    expect(() => staticOverscan(Infinity)).toThrow(RangeError)
+    expect(() => staticOverscan(-1)).toThrow(RangeError)
+  })
+
+  it('rounds down fractional rows', () => {
+    expect(staticOverscan(2.9).compute({ velocityPxPerMs: 0, avgRowHeight: 48 })).toEqual({
+      before: 2,
+      after: 2,
+    })
   })
 })

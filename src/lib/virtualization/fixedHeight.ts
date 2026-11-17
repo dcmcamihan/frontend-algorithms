@@ -2,8 +2,9 @@ import type { HeightModel } from './types'
 
 /** All rows share one height: every lookup is O(1). */
 export function fixedHeightModel(count: number, rowHeight: number): HeightModel {
-  if (!(rowHeight > 0)) throw new RangeError('rowHeight must be greater than 0')
-  if (count < 0 || !Number.isInteger(count))
+  if (!Number.isFinite(rowHeight) || rowHeight <= 0)
+    throw new RangeError('rowHeight must be a finite number greater than 0')
+  if (!Number.isSafeInteger(count) || count < 0)
     throw new RangeError('count must be a non-negative integer')
   return {
     count,
