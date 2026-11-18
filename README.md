@@ -29,8 +29,12 @@ Benchmarks run against a production build in Chromium via Playwright.
 ```bash
 npx playwright install chromium   # once
 npm run build && npx vite preview --port 4174
-npm run bench:first               # in a second terminal
+npm run bench:first               # in a second terminal: first render, DOM size, heap
+npm run bench:scroll              # scroll FPS, long tasks and blank frames, in headed Chrome
 ```
+
+The scroll benchmark opens a visible Chrome window. Keep it in view and the machine idle while it
+runs. `npm run bench:scroll -- --estimate` prints the expected run time without running it.
 
 Results are written to `src/bench/results/` as JSON. Every dataset is generated from a fixed seed,
 so runs can be reproduced.

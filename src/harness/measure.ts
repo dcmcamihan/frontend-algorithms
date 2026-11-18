@@ -23,6 +23,8 @@ export function domNodeCount(root: Element | null): number {
 export type HarnessResult = {
   mode: 'virtual' | 'plain'
   rows: number
+  /** Overscan strategy name, virtual mode only. */
+  overscan?: string
   initialRenderMs: number
   domNodes: number
   renderedRows: number

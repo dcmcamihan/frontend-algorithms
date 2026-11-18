@@ -1,19 +1,24 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { fixedHeightModel, staticOverscan } from '../lib'
+import { fixedHeightModel } from '../lib'
 import { FIXED_ROW_HEIGHT, rowLabel } from '../bench/datasets/rows'
 import { VirtualList } from '../react/VirtualList'
 import { afterPaint, domNodeCount } from './measure'
+import { DEFAULT_OVERSCAN, parseOverscan } from './overscanParam'
+import { installScrollBench } from './scrollBench'
 import type { HarnessResult } from './measure'
 import type { VisibleRange } from '../lib'
 
 const VIEWPORT = 480
-const OVERSCAN = staticOverscan(5)
 
 function readParams() {
   const p = new URLSearchParams(location.search)
   const mode = p.get('mode') === 'plain' ? 'plain' : 'virtual'
   const rows = Number(p.get('rows')) || 100_000
-  return { mode, rows } as const
+  const overscan = p.get('overscan') ?? DEFAULT_OVERSCAN
+  // In the scroll benchmark the live row counter is turned off, because updating it
+  // re-renders the whole page on every range change and would add to the measured cost.
+  const scrollBench = p.get('bench') === 'scroll'
+  return { mode, rows, overscan, scrollBench } as const
 }
 
 function Row({ i }: { i: number }) {
@@ -50,7 +55,8 @@ function PlainList({ rows }: { rows: number }) {
 }
 
 export default function App() {
-  const { mode, rows } = useMemo(() => readParams(), [])
+  const { mode, rows, overscan: overscanParam, scrollBench } = useMemo(() => readParams(), [])
+  const overscan = useMemo(() => parseOverscan(overscanParam), [overscanParam])
   const model = useMemo(() => fixedHeightModel(rows, FIXED_ROW_HEIGHT), [rows])
   const [result, setResult] = useState<HarnessResult | null>(null)
   const [rendered, setRendered] = useState(0)
@@ -63,6 +69,7 @@ export default function App() {
       const r: HarnessResult = {
         mode,
         rows,
+        overscan: mode === 'virtual' ? overscan.name : undefined,
         initialRenderMs: Math.round(ms * 10) / 10,
         domNodes: domNodeCount(list),
         renderedRows: list ? list.querySelectorAll('li').length : 0,
@@ -71,20 +78,27 @@ export default function App() {
       window.__bench = r
       setResult(r)
     })
-  }, [mode, rows])
+  }, [mode, rows, overscan])
 
-  const link = (m: string, n: number) => `?mode=${m}&rows=${n}`
+  useEffect(() => {
+    if (mode !== 'virtual') return
+    return installScrollBench(() => document.querySelector('[data-testid="virtual-list"]'))
+  }, [mode])
+
+  const link = (m: string, n: number, o = DEFAULT_OVERSCAN) =>
+    m === 'plain' ? `?mode=${m}&rows=${n}` : `?mode=${m}&rows=${n}&overscan=${o}`
 
   return (
     <main className="harness">
       <h1>Virtualization Lab</h1>
       <p className="lead">
-        Fixed-height rows ({FIXED_ROW_HEIGHT}px), static overscan of 5. Each link reloads the page
-        so timing starts clean.
+        Fixed-height rows ({FIXED_ROW_HEIGHT}px). Overscan strategy: {overscan.name}. Each link
+        reloads the page so timing starts clean.
       </p>
       <nav aria-label="Scenarios" className="scenarios">
         <a href={link('virtual', 10_000)}>Virtual 10k</a>
         <a href={link('virtual', 100_000)}>Virtual 100k</a>
+        <a href={link('virtual', 100_000, 'static-20')}>Virtual 100k, overscan 20</a>
         <a href={link('plain', 10_000)}>Plain 10k (baseline)</a>
       </nav>
       <p className="note">
@@ -106,7 +120,12 @@ export default function App() {
           <b>DOM nodes in list</b> {result?.domNodes.toLocaleString('en-US') ?? '…'}
         </div>
         <div>
-          <b>Rows in DOM now</b> {mode === 'virtual' ? rendered : rows.toLocaleString('en-US')}
+          <b>Rows in DOM now</b>{' '}
+          {mode !== 'virtual'
+            ? rows.toLocaleString('en-US')
+            : scrollBench
+              ? 'off during scroll test'
+              : rendered}
         </div>
         {result?.jsHeapMB !== undefined && (
           <div>
@@ -119,10 +138,10 @@ export default function App() {
         <VirtualList
           label={`${rows.toLocaleString('en-US')} rows`}
           model={model}
-          overscan={OVERSCAN}
+          overscan={overscan}
           height={VIEWPORT}
           renderRow={(i) => <Row i={i} />}
-          onRangeChange={onRangeChange}
+          onRangeChange={scrollBench ? undefined : onRangeChange}
         />
       ) : (
         <PlainList rows={rows} />

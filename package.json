@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
-    "bench:first": "node tests/bench/first-measure.mjs"
+    "bench:first": "node tests/bench/first-measure.mjs",
+    "bench:scroll": "node tests/bench/scroll-measure.mjs"
   },
   "dependencies": {
     "react": "^19.3.1",
