@@ -25,5 +25,6 @@ export type Overscan = { before: number; after: number }
 /** Decides how many extra rows to render around the visible ones. */
 export interface OverscanStrategy {
   readonly name: string
+  /** `velocityPxPerMs` is positive when scrolling down, negative when scrolling up. */
   compute(input: { velocityPxPerMs: number; avgRowHeight: number }): Overscan
 }

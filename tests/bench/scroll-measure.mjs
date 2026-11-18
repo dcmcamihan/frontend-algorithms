@@ -3,7 +3,7 @@
  *
  * Usage:
  *   npm run build && npx vite preview --port 4174
- *   npm run bench:scroll -- [--runs 6] [--strategies static-5,static-20] [--base URL]
+ *   npm run bench:scroll -- [--runs 5] [--strategies static-5,static-20,velocity] [--base URL]
  *   npm run bench:scroll -- --estimate     (print the planned run time and exit)
  *
  * Runs in headed Google Chrome (Playwright channel "chrome"). Set CHROME_PATH to use another
@@ -23,14 +23,19 @@ const flag = (name, fallback) => {
 }
 
 const base = flag('base', 'http://localhost:4174')
-const runs = Number(flag('runs', 6))
-const strategies = flag('strategies', 'static-5,static-20').split(',')
+const runs = Number(flag('runs', 5))
+const strategies = flag('strategies', 'static-5,static-20,velocity').split(',')
 const durationMs = Number(flag('duration', 3000))
 const datasets = [10_000, 100_000]
 const speeds = [
   { name: 'slow', pxPerSec: 600 },
   { name: 'medium', pxPerSec: 3000 },
   { name: 'fling', pxPerSec: 12000 },
+  // Static-5 keeps 240 px ready ahead (5 rows x 48 px). Rendered rows trail the scroll by one
+  // to two frames, so on a 120 Hz display static-5 can start to fall behind somewhere between
+  // about 14,400 and 28,800 px/s. These two speeds are above that range on purpose.
+  { name: 'fast-fling', pxPerSec: 30000 },
+  { name: 'max-fling', pxPerSec: 60000 },
 ]
 const START_FRACTION = 0.1
 const VIEWPORT = { width: 1280, height: 900 }
@@ -42,7 +47,7 @@ const EST_OVERHEAD_MS = 1500
 
 if (!Number.isInteger(runs) || runs < 2) throw new Error('--runs must be 2 or more (1 is warm-up)')
 for (const s of strategies) {
-  if (!/^static-\d{1,3}$/.test(s)) throw new Error(`unknown strategy "${s}"`)
+  if (!/^(static-\d{1,3}|velocity)$/.test(s)) throw new Error(`unknown strategy "${s}"`)
 }
 
 const scenarios = []
@@ -104,7 +109,9 @@ async function runOnce(browser, sc) {
       timeout: 60_000,
     })
     const loaded = await page.evaluate(() => window.__bench.overscan)
-    if (loaded !== sc.strategy) throw new Error(`page used ${loaded}, expected ${sc.strategy}`)
+    const expected =
+      sc.strategy === 'velocity' ? loaded?.startsWith('velocity-') : loaded === sc.strategy
+    if (!expected) throw new Error(`page used ${loaded}, expected ${sc.strategy}`)
 
     const cdp = await page.context().newCDPSession(page)
     await cdp.send('Performance.enable')
@@ -119,6 +126,7 @@ async function runOnce(browser, sc) {
       ((metricValue(after, name) - metricValue(before, name)) * 1000) / (r.durationMs / 1000)
     return {
       ...r,
+      strategyDetail: loaded,
       blankFramePct: (r.blankFrames / r.frames) * 100,
       droppedFramePct: (r.droppedFrames / Math.max(1, r.frames - 1)) * 100,
       scriptMsPerSec: perSec('ScriptDuration'),
@@ -178,6 +186,7 @@ const results = scenarios.map((sc) => {
   }
   return {
     strategy: sc.strategy,
+    strategyDetail: xs[0].strategyDetail,
     dataset: `rows-fixed-${sc.rows}`,
     speed: sc.speed.name,
     targetPxPerSec: sc.speed.pxPerSec,
@@ -202,6 +211,7 @@ const output = {
   method: {
     scroll:
       'scrollTop moved by a fixed px step every animation frame. Wheel and trackpad input were not simulated.',
+    speeds: 'synthetic target speeds set in code, not measured from real trackpad or wheel flings',
     stepFromSpeed: 'step = target px/s x idle frame interval, measured once per run',
     blankFrame:
       'more than 1 px of the viewport not covered by a rendered row, checked right after the frame scroll position is set. Compositor blank areas are not visible to this check.',

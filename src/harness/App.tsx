@@ -99,6 +99,7 @@ export default function App() {
         <a href={link('virtual', 10_000)}>Virtual 10k</a>
         <a href={link('virtual', 100_000)}>Virtual 100k</a>
         <a href={link('virtual', 100_000, 'static-20')}>Virtual 100k, overscan 20</a>
+        <a href={link('virtual', 100_000, 'velocity')}>Virtual 100k, velocity overscan</a>
         <a href={link('plain', 10_000)}>Plain 10k (baseline)</a>
       </nav>
       <p className="note">
