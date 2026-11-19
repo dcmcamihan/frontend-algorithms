@@ -25,6 +25,8 @@ export type HarnessResult = {
   rows: number
   /** Overscan strategy name, virtual mode only. */
   overscan?: string
+  /** Row heights: all 48 px, or seeded 24 to 72 px. Missing in results saved before variable heights existed. */
+  heights?: 'fixed' | 'variable'
   initialRenderMs: number
   domNodes: number
   renderedRows: number

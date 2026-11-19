@@ -78,7 +78,9 @@ export function VirtualList({ model, overscan, height, renderRow, label, onRange
           top: model.offsetOf(i),
           left: 0,
           right: 0,
-          height: model.offsetOf(i + 1) - model.offsetOf(i) || undefined,
+          height: model.offsetOf(i + 1) - model.offsetOf(i),
+          // A row shorter than its content, or with height 0, must not draw over the next row.
+          overflow: 'hidden',
         }}
       >
         {renderRow(i)}

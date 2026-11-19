@@ -20,6 +20,13 @@ describe('rowHeights dataset', () => {
     expect(Math.max(...a)).toBeLessThanOrEqual(VARIABLE_MAX)
   })
 
+  it('variable mode averages about the fixed height', () => {
+    const h = rowHeights(100_000, 'variable')
+    const mean = h.reduce((sum, x) => sum + x, 0) / h.length
+    expect(Math.abs(mean - FIXED_ROW_HEIGHT)).toBeLessThan(0.5)
+    expect(h.every((x) => Number.isInteger(x))).toBe(true)
+  })
+
   it('builds a million rows as a compact typed array', () => {
     const h = rowHeights(1_000_000, 'variable')
     expect(h.length).toBe(1_000_000)

@@ -2,8 +2,9 @@ import { createRandom } from '../../lib/shared/random'
 
 export const ROW_SCALES = [10_000, 100_000, 1_000_000] as const
 export const FIXED_ROW_HEIGHT = 48
-export const VARIABLE_MIN = 32
-export const VARIABLE_MAX = 200
+/** Whole-pixel heights from 24 to 72 px. The mean is 48 px, the same as FIXED_ROW_HEIGHT. */
+export const VARIABLE_MIN = 24
+export const VARIABLE_MAX = 72
 export const DEFAULT_SEED = 20261117
 
 export type RowMode = 'fixed' | 'variable'
