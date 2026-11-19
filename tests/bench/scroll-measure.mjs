@@ -3,13 +3,17 @@
  *
  * Usage:
  *   npm run build && npx vite preview --port 4174
- *   npm run bench:scroll -- [--runs 5] [--strategies static-5,static-20,velocity] [--base URL]
+ *   npm run bench:scroll -- [--runs 5] [--strategies static-5,static-20,velocity]
+ *                           [--heights fixed,variable] [--rows 10000,100000]
+ *                           [--out path.json] [--base URL]
  *   npm run bench:scroll -- --estimate     (print the planned run time and exit)
+ *
+ * --heights: `fixed` is every row 48 px. `variable` is seeded heights of 24 to 72 px (mean 48).
  *
  * Runs in headed Google Chrome (Playwright channel "chrome"). Set CHROME_PATH to use another
  * Chrome binary. Keep the window visible and the machine idle while it runs.
  * The first run of every scenario is a warm-up and is discarded.
- * Writes src/bench/results/virtualization-scroll.json
+ * Writes src/bench/results/virtualization-scroll.json unless --out is given.
  */
 import { chromium } from 'playwright'
 import { execSync } from 'node:child_process'
@@ -25,13 +29,16 @@ const flag = (name, fallback) => {
 const base = flag('base', 'http://localhost:4174')
 const runs = Number(flag('runs', 5))
 const strategies = flag('strategies', 'static-5,static-20,velocity').split(',')
+const heightsModes = flag('heights', 'fixed').split(',')
 const durationMs = Number(flag('duration', 3000))
-const datasets = [10_000, 100_000]
+const datasets = flag('rows', '10000,100000').split(',').map(Number)
+const outFile = flag('out', 'src/bench/results/virtualization-scroll.json')
 const speeds = [
   { name: 'slow', pxPerSec: 600 },
   { name: 'medium', pxPerSec: 3000 },
   { name: 'fling', pxPerSec: 12000 },
-  // Static-5 keeps 240 px ready ahead (5 rows x 48 px). Rendered rows trail the scroll by one
+  // Static-5 keeps 240 px ready ahead with 48 px rows (5 rows x 48 px), and about that on average
+  // with variable heights. Rendered rows trail the scroll by one
   // to two frames, so on a 120 Hz display static-5 can start to fall behind somewhere between
   // about 14,400 and 28,800 px/s. These two speeds are above that range on purpose.
   { name: 'fast-fling', pxPerSec: 30000 },
@@ -49,11 +56,18 @@ if (!Number.isInteger(runs) || runs < 2) throw new Error('--runs must be 2 or mo
 for (const s of strategies) {
   if (!/^(static-\d{1,3}|velocity)$/.test(s)) throw new Error(`unknown strategy "${s}"`)
 }
+for (const h of heightsModes) {
+  if (h !== 'fixed' && h !== 'variable') throw new Error(`unknown heights "${h}"`)
+}
+for (const n of datasets) {
+  if (!Number.isSafeInteger(n) || n < 1) throw new Error(`--rows values must be whole numbers`)
+}
 
 const scenarios = []
 for (const rows of datasets)
-  for (const strategy of strategies)
-    for (const speed of speeds) scenarios.push({ rows, strategy, speed })
+  for (const heights of heightsModes)
+    for (const strategy of strategies)
+      for (const speed of speeds) scenarios.push({ rows, heights, strategy, speed })
 
 const totalRuns = scenarios.length * runs
 const estimateMin = (totalRuns * (durationMs + EST_OVERHEAD_MS)) / 60000
@@ -104,7 +118,10 @@ const metricValue = (m, name) => m.metrics.find((x) => x.name === name)?.value ?
 async function runOnce(browser, sc) {
   const page = await browser.newPage({ viewport: VIEWPORT })
   try {
-    await page.goto(`${base}/?mode=virtual&rows=${sc.rows}&overscan=${sc.strategy}&bench=scroll`)
+    const heightsParam = sc.heights === 'variable' ? '&heights=variable' : ''
+    await page.goto(
+      `${base}/?mode=virtual&rows=${sc.rows}&overscan=${sc.strategy}${heightsParam}&bench=scroll`,
+    )
     await page.waitForFunction(() => window.__bench && window.__scrollBench, null, {
       timeout: 60_000,
     })
@@ -112,6 +129,10 @@ async function runOnce(browser, sc) {
     const expected =
       sc.strategy === 'velocity' ? loaded?.startsWith('velocity-') : loaded === sc.strategy
     if (!expected) throw new Error(`page used ${loaded}, expected ${sc.strategy}`)
+    // Results saved before variable heights existed have no heights field, so missing means fixed.
+    const loadedHeights = (await page.evaluate(() => window.__bench.heights)) ?? 'fixed'
+    if (loadedHeights !== sc.heights)
+      throw new Error(`page used ${loadedHeights} heights, expected ${sc.heights}`)
 
     const cdp = await page.context().newCDPSession(page)
     await cdp.send('Performance.enable')
@@ -187,7 +208,8 @@ const results = scenarios.map((sc) => {
   return {
     strategy: sc.strategy,
     strategyDetail: xs[0].strategyDetail,
-    dataset: `rows-fixed-${sc.rows}`,
+    heights: sc.heights,
+    dataset: `rows-${sc.heights}-${sc.rows}`,
     speed: sc.speed.name,
     targetPxPerSec: sc.speed.pxPerSec,
     stepPxPerFrame: median(xs.map((s) => s.stepPx)),
@@ -225,22 +247,23 @@ const output = {
     startFraction: START_FRACTION,
     viewport: VIEWPORT,
     listHeightPx: 480,
+    heights: {
+      fixed: 'every row 48 px',
+      variable:
+        'seeded whole-pixel heights from 24 to 72 px, mean about 48 px, same seed every run',
+    },
   },
   results,
 }
 await browser.close()
 
-writeFileSync(
-  'src/bench/results/virtualization-scroll.json',
-  JSON.stringify(output, null, 2) + '\n',
-)
-console.log(
-  `Done in ${elapsedMin.toFixed(1)} min. Written to src/bench/results/virtualization-scroll.json`,
-)
+writeFileSync(outFile, JSON.stringify(output, null, 2) + '\n')
+console.log(`Done in ${elapsedMin.toFixed(1)} min. Written to ${outFile}`)
 console.table(
   results.map((r) => ({
     strategy: r.strategy,
-    rows: r.dataset.replace('rows-fixed-', ''),
+    heights: r.heights,
+    rows: r.dataset.split('-').at(-1),
     speed: r.speed,
     fps: r.metrics.fps.median,
     'dropped %': r.metrics.droppedFramePct.median,

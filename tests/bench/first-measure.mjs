@@ -1,21 +1,39 @@
 /**
  * First virtualization measurement.
  * Usage: npm run build && npx vite preview --port 4174, then
- *        node tests/bench/first-measure.mjs [baseUrl] [runs]
+ *        node tests/bench/first-measure.mjs [baseUrl] [runs] [--heights fixed,variable] [--out path.json]
  * Needs Playwright (npm i -D playwright && npx playwright install chromium).
- * Writes src/bench/results/virtualization-first.json
+ * --heights: `fixed` (default) is every row 48 px. `variable` adds virtual lists with seeded
+ * heights of 24 to 72 px (mean 48). The plain baseline always uses 48 px rows.
+ * Scenarios run in interleaved rounds, so slow drift affects all of them equally.
+ * Writes src/bench/results/virtualization-first.json unless --out is given.
  */
 import { chromium } from 'playwright'
 import { writeFileSync } from 'node:fs'
 import os from 'node:os'
 
-const base = process.argv[2] ?? 'http://localhost:4174'
-const runs = Number(process.argv[3] ?? 6) // first run is discarded as warm-up
-const scenarios = [
-  { mode: 'virtual', rows: 10_000 },
-  { mode: 'virtual', rows: 100_000 },
-  { mode: 'plain', rows: 10_000 },
-]
+const args = process.argv.slice(2)
+const flag = (name, fallback) => {
+  const i = args.indexOf(`--${name}`)
+  return i >= 0 && args[i + 1] && !args[i + 1].startsWith('--') ? args[i + 1] : fallback
+}
+// Positional arguments are whatever is not a --flag or a flag's value.
+const positional = args.filter((a, i) => !a.startsWith('--') && !args[i - 1]?.startsWith('--'))
+const base = positional[0] ?? 'http://localhost:4174'
+const runs = Number(positional[1] ?? 6) // first run is discarded as warm-up
+const heightsModes = flag('heights', 'fixed').split(',')
+const outFile = flag('out', 'src/bench/results/virtualization-first.json')
+for (const h of heightsModes) {
+  if (h !== 'fixed' && h !== 'variable') throw new Error(`unknown heights "${h}"`)
+}
+if (!Number.isInteger(runs) || runs < 2) throw new Error('runs must be 2 or more (1 is warm-up)')
+
+const scenarios = []
+for (const heights of heightsModes) {
+  scenarios.push({ mode: 'virtual', rows: 10_000, heights })
+  scenarios.push({ mode: 'virtual', rows: 100_000, heights })
+}
+scenarios.push({ mode: 'plain', rows: 10_000, heights: 'fixed' })
 
 const median = (xs) => {
   const s = [...xs].sort((a, b) => a - b)
@@ -27,13 +45,18 @@ const p95 = (xs) =>
 
 const browser = await chromium.launch({ executablePath: process.env.CHROME_PATH || undefined })
 const results = []
-for (const sc of scenarios) {
-  const samples = []
-  for (let i = 0; i < runs; i++) {
+const samplesByScenario = new Map(scenarios.map((sc) => [sc, []]))
+for (let i = 0; i < runs; i++) {
+  for (const sc of scenarios) {
+    const samples = samplesByScenario.get(sc)
     const page = await browser.newPage({ viewport: { width: 1280, height: 900 } })
-    await page.goto(`${base}/?mode=${sc.mode}&rows=${sc.rows}`)
+    const heightsParam = sc.heights === 'variable' ? '&heights=variable' : ''
+    await page.goto(`${base}/?mode=${sc.mode}&rows=${sc.rows}${heightsParam}`)
     await page.waitForFunction(() => window.__bench, null, { timeout: 120_000 })
     const r = await page.evaluate(() => window.__bench)
+    // Results saved before variable heights existed have no heights field, so missing means fixed.
+    if ((r.heights ?? 'fixed') !== sc.heights)
+      throw new Error(`page used ${r.heights} heights, expected ${sc.heights}`)
     // Scroll check: jump to the middle and confirm the visible rows exist.
     if (sc.mode === 'virtual') {
       const ok = await page.evaluate(async () => {
@@ -53,11 +76,15 @@ for (const sc of scenarios) {
     if (i > 0) samples.push(r)
     await page.close()
   }
+}
+for (const sc of scenarios) {
+  const samples = samplesByScenario.get(sc)
   const pick = (k) => samples.map((s) => s[k]).filter((v) => typeof v === 'number')
   results.push({
     engine: 'virtualization',
-    strategy: sc.mode === 'virtual' ? 'fixed+static-overscan-5' : 'no-virtualization',
-    dataset: `rows-fixed-${sc.rows}`,
+    strategy: sc.mode === 'virtual' ? `${sc.heights}+static-overscan-5` : 'no-virtualization',
+    heights: sc.heights,
+    dataset: `rows-${sc.heights}-${sc.rows}`,
     seed: 20261117,
     runs: samples.length,
     metrics: {
@@ -81,14 +108,13 @@ for (const sc of scenarios) {
       cpu: `${os.cpus()[0]?.model ?? 'unknown'} x${os.cpus().length}`,
       date: new Date().toISOString(),
       build: 'production',
+      order: 'interleaved rounds',
     },
   })
 }
 await browser.close()
-writeFileSync(
-  'src/bench/results/virtualization-first.json',
-  JSON.stringify(results, null, 2) + '\n',
-)
+writeFileSync(outFile, JSON.stringify(results, null, 2) + '\n')
+console.log(`Written to ${outFile}`)
 console.table(
   results.map((r) => ({
     strategy: r.strategy,
