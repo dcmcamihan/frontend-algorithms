@@ -1,0 +1,1423 @@
+{
+  "benchmark": "virtualization-scroll",
+  "seed": 20261117,
+  "environment": {
+    "browser": "Google Chrome 157.0.8103.79 (headed)",
+    "os": "macOS 27.2.1",
+    "model": "Mac14,9",
+    "cpu": "Apple M2 Pro",
+    "cores": 10,
+    "memoryGB": 16,
+    "power": "AC Power",
+    "battery": "89%",
+    "lowPowerMode": false,
+    "build": "production (vite preview)",
+    "date": "2026-11-19T04:21:08.160Z",
+    "elapsedMin": 5.9
+  },
+  "method": {
+    "scroll": "scrollTop moved by a fixed px step every animation frame. Wheel and trackpad input were not simulated.",
+    "speeds": "synthetic target speeds set in code, not measured from real trackpad or wheel flings",
+    "stepFromSpeed": "step = target px/s x idle frame interval, measured once per run",
+    "blankFrame": "more than 1 px of the viewport not covered by a rendered row, checked right after the frame scroll position is set. Compositor blank areas are not visible to this check.",
+    "droppedFrame": "frame interval above 1.5 x the idle frame interval",
+    "cpu": "Chrome DevTools Protocol ScriptDuration and TaskDuration over the whole run, per second of scrolling",
+    "statistic": "median and p95 across runs. With few runs, p95 is the worst run.",
+    "runsPerScenario": 4,
+    "warmupRunsDiscarded": 1,
+    "order": "interleaved rounds",
+    "durationMs": 3000,
+    "startFraction": 0.1,
+    "viewport": {
+      "width": 1280,
+      "height": 900
+    },
+    "listHeightPx": 480,
+    "heights": {
+      "fixed": "every row 48 px",
+      "variable": "seeded whole-pixel heights from 24 to 72 px, mean about 48 px, same seed every run"
+    }
+  },
+  "results": [
+    {
+      "strategy": "static-5",
+      "strategyDetail": "static-5",
+      "heights": "fixed",
+      "dataset": "rows-fixed-10000",
+      "speed": "slow",
+      "targetPxPerSec": 600,
+      "stepPxPerFrame": 5,
+      "refreshMs": 8.3,
+      "framesPerRun": 361,
+      "runs": 4,
+      "metrics": {
+        "fps": {
+          "median": 120,
+          "p95": 120,
+          "unit": "fps"
+        },
+        "droppedFramePct": {
+          "median": 0,
+          "p95": 0,
+          "unit": "%"
+        },
+        "worstFrameMs": {
+          "median": 9.5,
+          "p95": 9.5,
+          "unit": "ms"
+        },
+        "blankFramePct": {
+          "median": 0,
+          "p95": 0,
+          "unit": "%"
+        },
+        "maxBlankPx": {
+          "median": 0,
+          "p95": 0,
+          "unit": "px"
+        },
+        "meanBlankPx": {
+          "median": 0,
+          "p95": 0,
+          "unit": "px"
+        },
+        "meanRenderedRows": {
+          "median": 21,
+          "p95": 21,
+          "unit": "rows"
+        },
+        "longTasks": {
+          "median": 0,
+          "p95": 0,
+          "unit": "count"
+        },
+        "longTaskMs": {
+          "median": 0,
+          "p95": 0,
+          "unit": "ms"
+        },
+        "scriptMsPerSec": {
+          "median": 132.1,
+          "p95": 136.3,
+          "unit": "ms per s"
+        },
+        "taskMsPerSec": {
+          "median": 224.7,
+          "p95": 240.5,
+          "unit": "ms per s"
+        }
+      }
+    },
+    {
+      "strategy": "static-5",
+      "strategyDetail": "static-5",
+      "heights": "fixed",
+      "dataset": "rows-fixed-10000",
+      "speed": "medium",
+      "targetPxPerSec": 3000,
+      "stepPxPerFrame": 25,
+      "refreshMs": 8.3,
+      "framesPerRun": 361,
+      "runs": 4,
+      "metrics": {
+        "fps": {
+          "median": 120,
+          "p95": 120,
+          "unit": "fps"
+        },
+        "droppedFramePct": {
+          "median": 0,
+          "p95": 0,
+          "unit": "%"
+        },
+        "worstFrameMs": {
+          "median": 9.4,
+          "p95": 9.4,
+          "unit": "ms"
+        },
+        "blankFramePct": {
+          "median": 0,
+          "p95": 0,
+          "unit": "%"
+        },
+        "maxBlankPx": {
+          "median": 0,
+          "p95": 0,
+          "unit": "px"
+        },
+        "meanBlankPx": {
+          "median": 0,
+          "p95": 0,
+          "unit": "px"
+        },
+        "meanRenderedRows": {
+          "median": 21,
+          "p95": 21,
+          "unit": "rows"
+        },
+        "longTasks": {
+          "median": 0,
+          "p95": 0,
+          "unit": "count"
+        },
+        "longTaskMs": {
+          "median": 0,
+          "p95": 0,
+          "unit": "ms"
+        },
+        "scriptMsPerSec": {
+          "median": 121.5,
+          "p95": 122.9,
+          "unit": "ms per s"
+        },
+        "taskMsPerSec": {
+          "median": 245.3,
+          "p95": 256.8,
+          "unit": "ms per s"
+        }
+      }
+    },
+    {
+      "strategy": "static-5",
+      "strategyDetail": "static-5",
+      "heights": "fixed",
+      "dataset": "rows-fixed-10000",
+      "speed": "fling",
+      "targetPxPerSec": 12000,
+      "stepPxPerFrame": 100,
+      "refreshMs": 8.3,
+      "framesPerRun": 361,
+      "runs": 4,
+      "metrics": {
+        "fps": {
+          "median": 120,
+          "p95": 120,
+          "unit": "fps"
+        },
+        "droppedFramePct": {
+          "median": 0,
+          "p95": 0,
+          "unit": "%"
+        },
+        "worstFrameMs": {
+          "median": 9.4,
+          "p95": 9.5,
+          "unit": "ms"
+        },
+        "blankFramePct": {
+          "median": 0,
+          "p95": 0,
+          "unit": "%"
+        },
+        "maxBlankPx": {
+          "median": 0,
+          "p95": 0,
+          "unit": "px"
+        },
+        "meanBlankPx": {
+          "median": 0,
+          "p95": 0,
+          "unit": "px"
+        },
+        "meanRenderedRows": {
+          "median": 20.9,
+          "p95": 20.9,
+          "unit": "rows"
+        },
+        "longTasks": {
+          "median": 0,
+          "p95": 0,
+          "unit": "count"
+        },
+        "longTaskMs": {
+          "median": 0,
+          "p95": 0,
+          "unit": "ms"
+        },
+        "scriptMsPerSec": {
+          "median": 110.8,
+          "p95": 115,
+          "unit": "ms per s"
+        },
+        "taskMsPerSec": {
+          "median": 251.8,
+          "p95": 260.5,
+          "unit": "ms per s"
+        }
+      }
+    },
+    {
+      "strategy": "static-5",
+      "strategyDetail": "static-5",
+      "heights": "fixed",
+      "dataset": "rows-fixed-10000",
+      "speed": "fast-fling",
+      "targetPxPerSec": 30000,
+      "stepPxPerFrame": 249,
+      "refreshMs": 8.3,
+      "framesPerRun": 361,
+      "runs": 4,
+      "metrics": {
+        "fps": {
+          "median": 120,
+          "p95": 120,
+          "unit": "fps"
+        },
+        "droppedFramePct": {
+          "median": 0,
+          "p95": 0,
+          "unit": "%"
+        },
+        "worstFrameMs": {
+          "median": 9.4,
+          "p95": 9.5,
+          "unit": "ms"
+        },
+        "blankFramePct": {
+          "median": 100,
+          "p95": 100,
+          "unit": "%"
+        },
+        "maxBlankPx": {
+          "median": 258,
+          "p95": 258,
+          "unit": "px"
+        },
+        "meanBlankPx": {
+          "median": 234.9,
+          "p95": 234.9,
+          "unit": "px"
+        },
+        "meanRenderedRows": {
+          "median": 20.9,
+          "p95": 20.9,
+          "unit": "rows"
+        },
+        "longTasks": {
+          "median": 0,
+          "p95": 0,
+          "unit": "count"
+        },
+        "longTaskMs": {
+          "median": 0,
+          "p95": 0,
+          "unit": "ms"
+        },
+        "scriptMsPerSec": {
+          "median": 111.3,
+          "p95": 114.2,
+          "unit": "ms per s"
+        },
+        "taskMsPerSec": {
+          "median": 252.5,
+          "p95": 259.2,
+          "unit": "ms per s"
+        }
+      }
+    },
+    {
+      "strategy": "static-5",
+      "strategyDetail": "static-5",
+      "heights": "fixed",
+      "dataset": "rows-fixed-10000",
+      "speed": "max-fling",
+      "targetPxPerSec": 60000,
+      "stepPxPerFrame": 498,
+      "refreshMs": 8.3,
+      "framesPerRun": 361.5,
+      "runs": 4,
+      "metrics": {
+        "fps": {
+          "median": 120,
+          "p95": 120,
+          "unit": "fps"
+        },
+        "droppedFramePct": {
+          "median": 0,
+          "p95": 0,
+          "unit": "%"
+        },
+        "worstFrameMs": {
+          "median": 9.3,
+          "p95": 9.4,
+          "unit": "ms"
+        },
+        "blankFramePct": {
+          "median": 100,
+          "p95": 100,
+          "unit": "%"
+        },
+        "maxBlankPx": {
+          "median": 480,
+          "p95": 480,
+          "unit": "px"
+        },
+        "meanBlankPx": {
+          "median": 479.4,
+          "p95": 479.4,
+          "unit": "px"
+        },
+        "meanRenderedRows": {
+          "median": 20.9,
+          "p95": 20.9,
+          "unit": "rows"
+        },
+        "longTasks": {
+          "median": 0,
+          "p95": 0,
+          "unit": "count"
+        },
+        "longTaskMs": {
+          "median": 0,
+          "p95": 0,
+          "unit": "ms"
+        },
+        "scriptMsPerSec": {
+          "median": 117.8,
+          "p95": 122,
+          "unit": "ms per s"
+        },
+        "taskMsPerSec": {
+          "median": 280.4,
+          "p95": 294.5,
+          "unit": "ms per s"
+        }
+      }
+    },
+    {
+      "strategy": "static-5",
+      "strategyDetail": "static-5",
+      "heights": "variable",
+      "dataset": "rows-variable-10000",
+      "speed": "slow",
+      "targetPxPerSec": 600,
+      "stepPxPerFrame": 5,
+      "refreshMs": 8.3,
+      "framesPerRun": 361,
+      "runs": 4,
+      "metrics": {
+        "fps": {
+          "median": 120,
+          "p95": 120,
+          "unit": "fps"
+        },
+        "droppedFramePct": {
+          "median": 0,
+          "p95": 0,
+          "unit": "%"
+        },
+        "worstFrameMs": {
+          "median": 9.4,
+          "p95": 10.9,
+          "unit": "ms"
+        },
+        "blankFramePct": {
+          "median": 0,
+          "p95": 0,
+          "unit": "%"
+        },
+        "maxBlankPx": {
+          "median": 0,
+          "p95": 0,
+          "unit": "px"
+        },
+        "meanBlankPx": {
+          "median": 0,
+          "p95": 0,
+          "unit": "px"
+        },
+        "meanRenderedRows": {
+          "median": 20.5,
+          "p95": 20.5,
+          "unit": "rows"
+        },
+        "longTasks": {
+          "median": 0,
+          "p95": 0,
+          "unit": "count"
+        },
+        "longTaskMs": {
+          "median": 0,
+          "p95": 0,
+          "unit": "ms"
+        },
+        "scriptMsPerSec": {
+          "median": 129.4,
+          "p95": 135.1,
+          "unit": "ms per s"
+        },
+        "taskMsPerSec": {
+          "median": 225.6,
+          "p95": 240.4,
+          "unit": "ms per s"
+        }
+      }
+    },
+    {
+      "strategy": "static-5",
+      "strategyDetail": "static-5",
+      "heights": "variable",
+      "dataset": "rows-variable-10000",
+      "speed": "medium",
+      "targetPxPerSec": 3000,
+      "stepPxPerFrame": 25,
+      "refreshMs": 8.3,
+      "framesPerRun": 361.5,
+      "runs": 4,
+      "metrics": {
+        "fps": {
+          "median": 120,
+          "p95": 120.2,
+          "unit": "fps"
+        },
+        "droppedFramePct": {
+          "median": 0,
+          "p95": 0,
+          "unit": "%"
+        },
+        "worstFrameMs": {
+          "median": 9.4,
+          "p95": 9.4,
+          "unit": "ms"
+        },
+        "blankFramePct": {
+          "median": 0,
+          "p95": 0,
+          "unit": "%"
+        },
+        "maxBlankPx": {
+          "median": 0,
+          "p95": 0,
+          "unit": "px"
+        },
+        "meanBlankPx": {
+          "median": 0,
+          "p95": 0,
+          "unit": "px"
+        },
+        "meanRenderedRows": {
+          "median": 20.8,
+          "p95": 20.8,
+          "unit": "rows"
+        },
+        "longTasks": {
+          "median": 0,
+          "p95": 0,
+          "unit": "count"
+        },
+        "longTaskMs": {
+          "median": 0,
+          "p95": 0,
+          "unit": "ms"
+        },
+        "scriptMsPerSec": {
+          "median": 115.1,
+          "p95": 124.4,
+          "unit": "ms per s"
+        },
+        "taskMsPerSec": {
+          "median": 245.1,
+          "p95": 262.7,
+          "unit": "ms per s"
+        }
+      }
+    },
+    {
+      "strategy": "static-5",
+      "strategyDetail": "static-5",
+      "heights": "variable",
+      "dataset": "rows-variable-10000",
+      "speed": "fling",
+      "targetPxPerSec": 12000,
+      "stepPxPerFrame": 100,
+      "refreshMs": 8.3,
+      "framesPerRun": 361,
+      "runs": 4,
+      "metrics": {
+        "fps": {
+          "median": 120,
+          "p95": 120,
+          "unit": "fps"
+        },
+        "droppedFramePct": {
+          "median": 0,
+          "p95": 0,
+          "unit": "%"
+        },
+        "worstFrameMs": {
+          "median": 9.4,
+          "p95": 9.4,
+          "unit": "ms"
+        },
+        "blankFramePct": {
+          "median": 2.5,
+          "p95": 2.5,
+          "unit": "%"
+        },
+        "maxBlankPx": {
+          "median": 25,
+          "p95": 31,
+          "unit": "px"
+        },
+        "meanBlankPx": {
+          "median": 0.3,
+          "p95": 0.4,
+          "unit": "px"
+        },
+        "meanRenderedRows": {
+          "median": 21,
+          "p95": 21,
+          "unit": "rows"
+        },
+        "longTasks": {
+          "median": 0,
+          "p95": 0,
+          "unit": "count"
+        },
+        "longTaskMs": {
+          "median": 0,
+          "p95": 0,
+          "unit": "ms"
+        },
+        "scriptMsPerSec": {
+          "median": 109.1,
+          "p95": 113,
+          "unit": "ms per s"
+        },
+        "taskMsPerSec": {
+          "median": 248,
+          "p95": 257.1,
+          "unit": "ms per s"
+        }
+      }
+    },
+    {
+      "strategy": "static-5",
+      "strategyDetail": "static-5",
+      "heights": "variable",
+      "dataset": "rows-variable-10000",
+      "speed": "fast-fling",
+      "targetPxPerSec": 30000,
+      "stepPxPerFrame": 249,
+      "refreshMs": 8.3,
+      "framesPerRun": 361,
+      "runs": 4,
+      "metrics": {
+        "fps": {
+          "median": 120,
+          "p95": 120,
+          "unit": "fps"
+        },
+        "droppedFramePct": {
+          "median": 0,
+          "p95": 0,
+          "unit": "%"
+        },
+        "worstFrameMs": {
+          "median": 9.4,
+          "p95": 9.4,
+          "unit": "ms"
+        },
+        "blankFramePct": {
+          "median": 99.7,
+          "p95": 99.7,
+          "unit": "%"
+        },
+        "maxBlankPx": {
+          "median": 330,
+          "p95": 330,
+          "unit": "px"
+        },
+        "meanBlankPx": {
+          "median": 230.7,
+          "p95": 230.7,
+          "unit": "px"
+        },
+        "meanRenderedRows": {
+          "median": 21,
+          "p95": 21,
+          "unit": "rows"
+        },
+        "longTasks": {
+          "median": 0,
+          "p95": 0,
+          "unit": "count"
+        },
+        "longTaskMs": {
+          "median": 0,
+          "p95": 0,
+          "unit": "ms"
+        },
+        "scriptMsPerSec": {
+          "median": 108.5,
+          "p95": 112.6,
+          "unit": "ms per s"
+        },
+        "taskMsPerSec": {
+          "median": 244.8,
+          "p95": 250.8,
+          "unit": "ms per s"
+        }
+      }
+    },
+    {
+      "strategy": "static-5",
+      "strategyDetail": "static-5",
+      "heights": "variable",
+      "dataset": "rows-variable-10000",
+      "speed": "max-fling",
+      "targetPxPerSec": 60000,
+      "stepPxPerFrame": 498,
+      "refreshMs": 8.3,
+      "framesPerRun": 361,
+      "runs": 4,
+      "metrics": {
+        "fps": {
+          "median": 120,
+          "p95": 120,
+          "unit": "fps"
+        },
+        "droppedFramePct": {
+          "median": 0,
+          "p95": 0,
+          "unit": "%"
+        },
+        "worstFrameMs": {
+          "median": 9.4,
+          "p95": 9.4,
+          "unit": "ms"
+        },
+        "blankFramePct": {
+          "median": 100,
+          "p95": 100,
+          "unit": "%"
+        },
+        "maxBlankPx": {
+          "median": 480,
+          "p95": 480,
+          "unit": "px"
+        },
+        "meanBlankPx": {
+          "median": 479.2,
+          "p95": 479.2,
+          "unit": "px"
+        },
+        "meanRenderedRows": {
+          "median": 21,
+          "p95": 21,
+          "unit": "rows"
+        },
+        "longTasks": {
+          "median": 0,
+          "p95": 0,
+          "unit": "count"
+        },
+        "longTaskMs": {
+          "median": 0,
+          "p95": 0,
+          "unit": "ms"
+        },
+        "scriptMsPerSec": {
+          "median": 119.4,
+          "p95": 122.6,
+          "unit": "ms per s"
+        },
+        "taskMsPerSec": {
+          "median": 285.2,
+          "p95": 291.9,
+          "unit": "ms per s"
+        }
+      }
+    },
+    {
+      "strategy": "static-5",
+      "strategyDetail": "static-5",
+      "heights": "fixed",
+      "dataset": "rows-fixed-100000",
+      "speed": "slow",
+      "targetPxPerSec": 600,
+      "stepPxPerFrame": 5,
+      "refreshMs": 8.3,
+      "framesPerRun": 361.5,
+      "runs": 4,
+      "metrics": {
+        "fps": {
+          "median": 120,
+          "p95": 120,
+          "unit": "fps"
+        },
+        "droppedFramePct": {
+          "median": 0,
+          "p95": 0,
+          "unit": "%"
+        },
+        "worstFrameMs": {
+          "median": 9.4,
+          "p95": 9.4,
+          "unit": "ms"
+        },
+        "blankFramePct": {
+          "median": 0,
+          "p95": 0,
+          "unit": "%"
+        },
+        "maxBlankPx": {
+          "median": 0,
+          "p95": 0,
+          "unit": "px"
+        },
+        "meanBlankPx": {
+          "median": 0,
+          "p95": 0,
+          "unit": "px"
+        },
+        "meanRenderedRows": {
+          "median": 21,
+          "p95": 21,
+          "unit": "rows"
+        },
+        "longTasks": {
+          "median": 0,
+          "p95": 0,
+          "unit": "count"
+        },
+        "longTaskMs": {
+          "median": 0,
+          "p95": 0,
+          "unit": "ms"
+        },
+        "scriptMsPerSec": {
+          "median": 131.7,
+          "p95": 134.6,
+          "unit": "ms per s"
+        },
+        "taskMsPerSec": {
+          "median": 224.8,
+          "p95": 232,
+          "unit": "ms per s"
+        }
+      }
+    },
+    {
+      "strategy": "static-5",
+      "strategyDetail": "static-5",
+      "heights": "fixed",
+      "dataset": "rows-fixed-100000",
+      "speed": "medium",
+      "targetPxPerSec": 3000,
+      "stepPxPerFrame": 25,
+      "refreshMs": 8.3,
+      "framesPerRun": 361.5,
+      "runs": 4,
+      "metrics": {
+        "fps": {
+          "median": 120,
+          "p95": 120.2,
+          "unit": "fps"
+        },
+        "droppedFramePct": {
+          "median": 0,
+          "p95": 0,
+          "unit": "%"
+        },
+        "worstFrameMs": {
+          "median": 9.3,
+          "p95": 9.4,
+          "unit": "ms"
+        },
+        "blankFramePct": {
+          "median": 0,
+          "p95": 0,
+          "unit": "%"
+        },
+        "maxBlankPx": {
+          "median": 0,
+          "p95": 0,
+          "unit": "px"
+        },
+        "meanBlankPx": {
+          "median": 0,
+          "p95": 0,
+          "unit": "px"
+        },
+        "meanRenderedRows": {
+          "median": 21,
+          "p95": 21,
+          "unit": "rows"
+        },
+        "longTasks": {
+          "median": 0,
+          "p95": 0,
+          "unit": "count"
+        },
+        "longTaskMs": {
+          "median": 0,
+          "p95": 0,
+          "unit": "ms"
+        },
+        "scriptMsPerSec": {
+          "median": 121,
+          "p95": 123.7,
+          "unit": "ms per s"
+        },
+        "taskMsPerSec": {
+          "median": 247.1,
+          "p95": 251.8,
+          "unit": "ms per s"
+        }
+      }
+    },
+    {
+      "strategy": "static-5",
+      "strategyDetail": "static-5",
+      "heights": "fixed",
+      "dataset": "rows-fixed-100000",
+      "speed": "fling",
+      "targetPxPerSec": 12000,
+      "stepPxPerFrame": 100,
+      "refreshMs": 8.3,
+      "framesPerRun": 361.5,
+      "runs": 4,
+      "metrics": {
+        "fps": {
+          "median": 120,
+          "p95": 120,
+          "unit": "fps"
+        },
+        "droppedFramePct": {
+          "median": 0,
+          "p95": 0,
+          "unit": "%"
+        },
+        "worstFrameMs": {
+          "median": 9.4,
+          "p95": 9.4,
+          "unit": "ms"
+        },
+        "blankFramePct": {
+          "median": 0,
+          "p95": 0,
+          "unit": "%"
+        },
+        "maxBlankPx": {
+          "median": 0,
+          "p95": 0,
+          "unit": "px"
+        },
+        "meanBlankPx": {
+          "median": 0,
+          "p95": 0,
+          "unit": "px"
+        },
+        "meanRenderedRows": {
+          "median": 20.9,
+          "p95": 20.9,
+          "unit": "rows"
+        },
+        "longTasks": {
+          "median": 0,
+          "p95": 0,
+          "unit": "count"
+        },
+        "longTaskMs": {
+          "median": 0,
+          "p95": 0,
+          "unit": "ms"
+        },
+        "scriptMsPerSec": {
+          "median": 107.4,
+          "p95": 114.7,
+          "unit": "ms per s"
+        },
+        "taskMsPerSec": {
+          "median": 246.3,
+          "p95": 264,
+          "unit": "ms per s"
+        }
+      }
+    },
+    {
+      "strategy": "static-5",
+      "strategyDetail": "static-5",
+      "heights": "fixed",
+      "dataset": "rows-fixed-100000",
+      "speed": "fast-fling",
+      "targetPxPerSec": 30000,
+      "stepPxPerFrame": 249,
+      "refreshMs": 8.3,
+      "framesPerRun": 361.5,
+      "runs": 4,
+      "metrics": {
+        "fps": {
+          "median": 120,
+          "p95": 120,
+          "unit": "fps"
+        },
+        "droppedFramePct": {
+          "median": 0,
+          "p95": 0,
+          "unit": "%"
+        },
+        "worstFrameMs": {
+          "median": 9.4,
+          "p95": 9.4,
+          "unit": "ms"
+        },
+        "blankFramePct": {
+          "median": 100,
+          "p95": 100,
+          "unit": "%"
+        },
+        "maxBlankPx": {
+          "median": 258,
+          "p95": 258,
+          "unit": "px"
+        },
+        "meanBlankPx": {
+          "median": 234.9,
+          "p95": 234.9,
+          "unit": "px"
+        },
+        "meanRenderedRows": {
+          "median": 20.9,
+          "p95": 20.9,
+          "unit": "rows"
+        },
+        "longTasks": {
+          "median": 0,
+          "p95": 0,
+          "unit": "count"
+        },
+        "longTaskMs": {
+          "median": 0,
+          "p95": 0,
+          "unit": "ms"
+        },
+        "scriptMsPerSec": {
+          "median": 107.6,
+          "p95": 109.3,
+          "unit": "ms per s"
+        },
+        "taskMsPerSec": {
+          "median": 240.4,
+          "p95": 247.5,
+          "unit": "ms per s"
+        }
+      }
+    },
+    {
+      "strategy": "static-5",
+      "strategyDetail": "static-5",
+      "heights": "fixed",
+      "dataset": "rows-fixed-100000",
+      "speed": "max-fling",
+      "targetPxPerSec": 60000,
+      "stepPxPerFrame": 498,
+      "refreshMs": 8.3,
+      "framesPerRun": 361.5,
+      "runs": 4,
+      "metrics": {
+        "fps": {
+          "median": 120,
+          "p95": 120,
+          "unit": "fps"
+        },
+        "droppedFramePct": {
+          "median": 0,
+          "p95": 0,
+          "unit": "%"
+        },
+        "worstFrameMs": {
+          "median": 9.3,
+          "p95": 9.4,
+          "unit": "ms"
+        },
+        "blankFramePct": {
+          "median": 100,
+          "p95": 100,
+          "unit": "%"
+        },
+        "maxBlankPx": {
+          "median": 480,
+          "p95": 480,
+          "unit": "px"
+        },
+        "meanBlankPx": {
+          "median": 479.4,
+          "p95": 479.4,
+          "unit": "px"
+        },
+        "meanRenderedRows": {
+          "median": 20.9,
+          "p95": 20.9,
+          "unit": "rows"
+        },
+        "longTasks": {
+          "median": 0,
+          "p95": 0,
+          "unit": "count"
+        },
+        "longTaskMs": {
+          "median": 0,
+          "p95": 0,
+          "unit": "ms"
+        },
+        "scriptMsPerSec": {
+          "median": 119.1,
+          "p95": 119.6,
+          "unit": "ms per s"
+        },
+        "taskMsPerSec": {
+          "median": 281.5,
+          "p95": 287.5,
+          "unit": "ms per s"
+        }
+      }
+    },
+    {
+      "strategy": "static-5",
+      "strategyDetail": "static-5",
+      "heights": "variable",
+      "dataset": "rows-variable-100000",
+      "speed": "slow",
+      "targetPxPerSec": 600,
+      "stepPxPerFrame": 5,
+      "refreshMs": 8.3,
+      "framesPerRun": 361.5,
+      "runs": 4,
+      "metrics": {
+        "fps": {
+          "median": 120,
+          "p95": 120,
+          "unit": "fps"
+        },
+        "droppedFramePct": {
+          "median": 0,
+          "p95": 0,
+          "unit": "%"
+        },
+        "worstFrameMs": {
+          "median": 9.4,
+          "p95": 9.4,
+          "unit": "ms"
+        },
+        "blankFramePct": {
+          "median": 0,
+          "p95": 0,
+          "unit": "%"
+        },
+        "maxBlankPx": {
+          "median": 0,
+          "p95": 0,
+          "unit": "px"
+        },
+        "meanBlankPx": {
+          "median": 0,
+          "p95": 0,
+          "unit": "px"
+        },
+        "meanRenderedRows": {
+          "median": 21.1,
+          "p95": 21.1,
+          "unit": "rows"
+        },
+        "longTasks": {
+          "median": 0,
+          "p95": 0,
+          "unit": "count"
+        },
+        "longTaskMs": {
+          "median": 0,
+          "p95": 0,
+          "unit": "ms"
+        },
+        "scriptMsPerSec": {
+          "median": 134,
+          "p95": 138.9,
+          "unit": "ms per s"
+        },
+        "taskMsPerSec": {
+          "median": 235.9,
+          "p95": 242.4,
+          "unit": "ms per s"
+        }
+      }
+    },
+    {
+      "strategy": "static-5",
+      "strategyDetail": "static-5",
+      "heights": "variable",
+      "dataset": "rows-variable-100000",
+      "speed": "medium",
+      "targetPxPerSec": 3000,
+      "stepPxPerFrame": 25,
+      "refreshMs": 8.3,
+      "framesPerRun": 361,
+      "runs": 4,
+      "metrics": {
+        "fps": {
+          "median": 120,
+          "p95": 120,
+          "unit": "fps"
+        },
+        "droppedFramePct": {
+          "median": 0,
+          "p95": 0,
+          "unit": "%"
+        },
+        "worstFrameMs": {
+          "median": 9.4,
+          "p95": 9.4,
+          "unit": "ms"
+        },
+        "blankFramePct": {
+          "median": 0,
+          "p95": 0,
+          "unit": "%"
+        },
+        "maxBlankPx": {
+          "median": 0,
+          "p95": 0,
+          "unit": "px"
+        },
+        "meanBlankPx": {
+          "median": 0,
+          "p95": 0,
+          "unit": "px"
+        },
+        "meanRenderedRows": {
+          "median": 21.1,
+          "p95": 21.1,
+          "unit": "rows"
+        },
+        "longTasks": {
+          "median": 0,
+          "p95": 0,
+          "unit": "count"
+        },
+        "longTaskMs": {
+          "median": 0,
+          "p95": 0,
+          "unit": "ms"
+        },
+        "scriptMsPerSec": {
+          "median": 118.5,
+          "p95": 123.6,
+          "unit": "ms per s"
+        },
+        "taskMsPerSec": {
+          "median": 253.7,
+          "p95": 256.3,
+          "unit": "ms per s"
+        }
+      }
+    },
+    {
+      "strategy": "static-5",
+      "strategyDetail": "static-5",
+      "heights": "variable",
+      "dataset": "rows-variable-100000",
+      "speed": "fling",
+      "targetPxPerSec": 12000,
+      "stepPxPerFrame": 100,
+      "refreshMs": 8.3,
+      "framesPerRun": 361,
+      "runs": 4,
+      "metrics": {
+        "fps": {
+          "median": 120,
+          "p95": 120,
+          "unit": "fps"
+        },
+        "droppedFramePct": {
+          "median": 0,
+          "p95": 0,
+          "unit": "%"
+        },
+        "worstFrameMs": {
+          "median": 9.4,
+          "p95": 10.4,
+          "unit": "ms"
+        },
+        "blankFramePct": {
+          "median": 3.3,
+          "p95": 3.3,
+          "unit": "%"
+        },
+        "maxBlankPx": {
+          "median": 46,
+          "p95": 46,
+          "unit": "px"
+        },
+        "meanBlankPx": {
+          "median": 0.6,
+          "p95": 0.6,
+          "unit": "px"
+        },
+        "meanRenderedRows": {
+          "median": 21,
+          "p95": 21,
+          "unit": "rows"
+        },
+        "longTasks": {
+          "median": 0,
+          "p95": 0,
+          "unit": "count"
+        },
+        "longTaskMs": {
+          "median": 0,
+          "p95": 0,
+          "unit": "ms"
+        },
+        "scriptMsPerSec": {
+          "median": 112,
+          "p95": 112.9,
+          "unit": "ms per s"
+        },
+        "taskMsPerSec": {
+          "median": 255.8,
+          "p95": 258.9,
+          "unit": "ms per s"
+        }
+      }
+    },
+    {
+      "strategy": "static-5",
+      "strategyDetail": "static-5",
+      "heights": "variable",
+      "dataset": "rows-variable-100000",
+      "speed": "fast-fling",
+      "targetPxPerSec": 30000,
+      "stepPxPerFrame": 249,
+      "refreshMs": 8.3,
+      "framesPerRun": 361,
+      "runs": 4,
+      "metrics": {
+        "fps": {
+          "median": 120,
+          "p95": 120,
+          "unit": "fps"
+        },
+        "droppedFramePct": {
+          "median": 0,
+          "p95": 0,
+          "unit": "%"
+        },
+        "worstFrameMs": {
+          "median": 9.4,
+          "p95": 9.4,
+          "unit": "ms"
+        },
+        "blankFramePct": {
+          "median": 100,
+          "p95": 100,
+          "unit": "%"
+        },
+        "maxBlankPx": {
+          "median": 345,
+          "p95": 345,
+          "unit": "px"
+        },
+        "meanBlankPx": {
+          "median": 232.5,
+          "p95": 232.5,
+          "unit": "px"
+        },
+        "meanRenderedRows": {
+          "median": 21,
+          "p95": 21,
+          "unit": "rows"
+        },
+        "longTasks": {
+          "median": 0,
+          "p95": 0,
+          "unit": "count"
+        },
+        "longTaskMs": {
+          "median": 0,
+          "p95": 0,
+          "unit": "ms"
+        },
+        "scriptMsPerSec": {
+          "median": 107.5,
+          "p95": 109,
+          "unit": "ms per s"
+        },
+        "taskMsPerSec": {
+          "median": 245.2,
+          "p95": 253.3,
+          "unit": "ms per s"
+        }
+      }
+    },
+    {
+      "strategy": "static-5",
+      "strategyDetail": "static-5",
+      "heights": "variable",
+      "dataset": "rows-variable-100000",
+      "speed": "max-fling",
+      "targetPxPerSec": 60000,
+      "stepPxPerFrame": 498,
+      "refreshMs": 8.3,
+      "framesPerRun": 361.5,
+      "runs": 4,
+      "metrics": {
+        "fps": {
+          "median": 120,
+          "p95": 120,
+          "unit": "fps"
+        },
+        "droppedFramePct": {
+          "median": 0,
+          "p95": 0,
+          "unit": "%"
+        },
+        "worstFrameMs": {
+          "median": 9.4,
+          "p95": 9.4,
+          "unit": "ms"
+        },
+        "blankFramePct": {
+          "median": 100,
+          "p95": 100,
+          "unit": "%"
+        },
+        "maxBlankPx": {
+          "median": 480,
+          "p95": 480,
+          "unit": "px"
+        },
+        "meanBlankPx": {
+          "median": 479.5,
+          "p95": 479.5,
+          "unit": "px"
+        },
+        "meanRenderedRows": {
+          "median": 21,
+          "p95": 21,
+          "unit": "rows"
+        },
+        "longTasks": {
+          "median": 0,
+          "p95": 0,
+          "unit": "count"
+        },
+        "longTaskMs": {
+          "median": 0,
+          "p95": 0,
+          "unit": "ms"
+        },
+        "scriptMsPerSec": {
+          "median": 115.8,
+          "p95": 118.1,
+          "unit": "ms per s"
+        },
+        "taskMsPerSec": {
+          "median": 281.4,
+          "p95": 283.4,
+          "unit": "ms per s"
+        }
+      }
+    }
+  ]
+}

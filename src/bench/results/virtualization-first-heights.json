@@ -1,0 +1,179 @@
+[
+  {
+    "engine": "virtualization",
+    "strategy": "fixed+static-overscan-5",
+    "heights": "fixed",
+    "dataset": "rows-fixed-10000",
+    "seed": 20261117,
+    "runs": 5,
+    "metrics": {
+      "initialRenderMs": {
+        "median": 34.3,
+        "p95": 34.4,
+        "unit": "ms"
+      },
+      "domNodes": {
+        "median": 62,
+        "p95": 62,
+        "unit": "nodes"
+      },
+      "jsHeapMB": {
+        "median": 9.5,
+        "p95": 9.5,
+        "unit": "MB"
+      }
+    },
+    "checks": {
+      "midScrollCovered": true
+    },
+    "environment": {
+      "browser": "Chromium 159.0.8154.6 (headless)",
+      "os": "Darwin 27.2.0",
+      "cpu": "Apple M2 Pro x10",
+      "date": "2026-11-19T04:13:39.266Z",
+      "build": "production",
+      "order": "interleaved rounds"
+    }
+  },
+  {
+    "engine": "virtualization",
+    "strategy": "fixed+static-overscan-5",
+    "heights": "fixed",
+    "dataset": "rows-fixed-100000",
+    "seed": 20261117,
+    "runs": 5,
+    "metrics": {
+      "initialRenderMs": {
+        "median": 34,
+        "p95": 35.2,
+        "unit": "ms"
+      },
+      "domNodes": {
+        "median": 62,
+        "p95": 62,
+        "unit": "nodes"
+      },
+      "jsHeapMB": {
+        "median": 9.5,
+        "p95": 9.5,
+        "unit": "MB"
+      }
+    },
+    "checks": {
+      "midScrollCovered": true
+    },
+    "environment": {
+      "browser": "Chromium 159.0.8154.6 (headless)",
+      "os": "Darwin 27.2.0",
+      "cpu": "Apple M2 Pro x10",
+      "date": "2026-11-19T04:13:39.266Z",
+      "build": "production",
+      "order": "interleaved rounds"
+    }
+  },
+  {
+    "engine": "virtualization",
+    "strategy": "variable+static-overscan-5",
+    "heights": "variable",
+    "dataset": "rows-variable-10000",
+    "seed": 20261117,
+    "runs": 5,
+    "metrics": {
+      "initialRenderMs": {
+        "median": 33.7,
+        "p95": 35.6,
+        "unit": "ms"
+      },
+      "domNodes": {
+        "median": 66,
+        "p95": 66,
+        "unit": "nodes"
+      },
+      "jsHeapMB": {
+        "median": 9.5,
+        "p95": 9.5,
+        "unit": "MB"
+      }
+    },
+    "checks": {
+      "midScrollCovered": true
+    },
+    "environment": {
+      "browser": "Chromium 159.0.8154.6 (headless)",
+      "os": "Darwin 27.2.0",
+      "cpu": "Apple M2 Pro x10",
+      "date": "2026-11-19T04:13:39.266Z",
+      "build": "production",
+      "order": "interleaved rounds"
+    }
+  },
+  {
+    "engine": "virtualization",
+    "strategy": "variable+static-overscan-5",
+    "heights": "variable",
+    "dataset": "rows-variable-100000",
+    "seed": 20261117,
+    "runs": 5,
+    "metrics": {
+      "initialRenderMs": {
+        "median": 32,
+        "p95": 32.4,
+        "unit": "ms"
+      },
+      "domNodes": {
+        "median": 66,
+        "p95": 66,
+        "unit": "nodes"
+      },
+      "jsHeapMB": {
+        "median": 9.5,
+        "p95": 9.5,
+        "unit": "MB"
+      }
+    },
+    "checks": {
+      "midScrollCovered": true
+    },
+    "environment": {
+      "browser": "Chromium 159.0.8154.6 (headless)",
+      "os": "Darwin 27.2.0",
+      "cpu": "Apple M2 Pro x10",
+      "date": "2026-11-19T04:13:39.266Z",
+      "build": "production",
+      "order": "interleaved rounds"
+    }
+  },
+  {
+    "engine": "virtualization",
+    "strategy": "no-virtualization",
+    "heights": "fixed",
+    "dataset": "rows-fixed-10000",
+    "seed": 20261117,
+    "runs": 5,
+    "metrics": {
+      "initialRenderMs": {
+        "median": 166.7,
+        "p95": 185.7,
+        "unit": "ms"
+      },
+      "domNodes": {
+        "median": 40002,
+        "p95": 40002,
+        "unit": "nodes"
+      },
+      "jsHeapMB": {
+        "median": 14.5,
+        "p95": 15.4,
+        "unit": "MB"
+      }
+    },
+    "environment": {
+      "browser": "Chromium 159.0.8154.6 (headless)",
+      "os": "Darwin 27.2.0",
+      "cpu": "Apple M2 Pro x10",
+      "date": "2026-11-19T04:13:39.266Z",
+      "build": "production",
+      "order": "interleaved rounds"
+    }
+  }
+]
