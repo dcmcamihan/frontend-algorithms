@@ -12,6 +12,22 @@ export function staticOverscan(rows = 5): OverscanStrategy {
   }
 }
 
+/**
+ * Cover a fixed distance in pixels on each side, whatever the row heights are.
+ * `staticOverscan` counts rows, so with variable heights five short rows cover less than five
+ * tall ones. With fixed heights, `pixelOverscan(rows * rowHeight)` renders the same rows as
+ * `staticOverscan(rows)`.
+ */
+export function pixelOverscan(px = 240): OverscanStrategy {
+  if (!Number.isFinite(px) || px < 0) {
+    throw new RangeError('overscan px must be a finite number of 0 or more')
+  }
+  return {
+    name: `pixels-${px}`,
+    compute: () => ({ before: px, after: px, unit: 'px' }),
+  }
+}
+
 export type VelocityOverscanOptions = {
   /** Rows on each side when the list is still, and on the trailing side while scrolling. */
   base?: number

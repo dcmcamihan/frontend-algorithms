@@ -19,14 +19,27 @@ export function computeRange(
   // Clamp so overscrolling (e.g. iOS bounce) never produces an empty range.
   const safeTop = Number.isFinite(scrollTop) ? scrollTop : 0
   const top = Math.min(Math.max(0, safeTop), Math.max(0, totalHeight - viewportHeight))
-  const first = model.indexAt(top)
-  const last = model.indexAt(top + viewportHeight - 1)
-  const start = Math.max(0, first - safeCount(overscan.before))
-  const end = Math.min(model.count - 1, last + safeCount(overscan.after))
+  let start: number
+  let end: number
+  if (overscan.unit === 'px') {
+    // Pixel overscan: cover a distance, however many rows that takes.
+    start = model.indexAt(top - safeCount(overscan.before, false))
+    end = model.indexAt(top + viewportHeight - 1 + safeCount(overscan.after, false))
+  } else {
+    start = Math.max(0, model.indexAt(top) - safeCount(overscan.before))
+    end = Math.min(
+      model.count - 1,
+      model.indexAt(top + viewportHeight - 1) + safeCount(overscan.after),
+    )
+  }
   return { start, end, offsetTop: model.offsetOf(start), totalHeight }
 }
 
-/** Overscan from a custom strategy may be anything; keep it a whole number of 0 or more. */
-function safeCount(n: number): number {
-  return Number.isFinite(n) && n > 0 ? Math.floor(n) : 0
+/**
+ * Overscan from a custom strategy may be anything. Rows are kept to a whole number of 0 or
+ * more. Pixels keep their fractions, because a part of a pixel can still decide which row is hit.
+ */
+function safeCount(n: number, whole = true): number {
+  if (!Number.isFinite(n) || n <= 0) return 0
+  return whole ? Math.floor(n) : n
 }

@@ -127,6 +127,9 @@ export default function App() {
         <a href={link('virtual', 100_000, DEFAULT_OVERSCAN, 'variable')}>
           Virtual 100k, variable heights
         </a>
+        <a href={link('virtual', 100_000, 'pixels-240', 'variable')}>
+          Virtual 100k, variable heights, pixel overscan
+        </a>
         <a href={link('plain', 10_000)}>Plain 10k (baseline)</a>
       </nav>
       <p className="note">

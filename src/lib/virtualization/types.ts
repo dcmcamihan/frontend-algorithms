@@ -20,7 +20,13 @@ export interface HeightModel {
   indexAt(y: number): number
 }
 
-export type Overscan = { before: number; after: number }
+/**
+ * Extra content to render on each side of the viewport.
+ * `unit` is 'rows' when left out. With 'px', `before` and `after` are pixel distances and
+ * `computeRange` turns them into rows with the height model, so the cover stays the same
+ * when row heights differ.
+ */
+export type Overscan = { before: number; after: number; unit?: 'rows' | 'px' }
 
 /** Decides how many extra rows to render around the visible ones. */
 export interface OverscanStrategy {

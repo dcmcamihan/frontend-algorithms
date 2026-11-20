@@ -11,11 +11,20 @@ describe('parseOverscan', () => {
     expect(parseOverscan('velocity').name).toBe('velocity-5-32ms-max60')
   })
 
+  it('reads pixel overscan', () => {
+    expect(parseOverscan('pixels').name).toBe('pixels-240')
+    expect(parseOverscan('pixels-100').name).toBe('pixels-100')
+    expect(parseOverscan('pixels-0').name).toBe('pixels-0')
+  })
+
   it('falls back to static-5 for missing or unknown values', () => {
     expect(parseOverscan(null).name).toBe('static-5')
     expect(parseOverscan('').name).toBe('static-5')
     expect(parseOverscan('static-').name).toBe('static-5')
     expect(parseOverscan('Velocity').name).toBe('static-5')
     expect(parseOverscan('static-5000').name).toBe('static-5')
+    expect(parseOverscan('pixels-').name).toBe('static-5')
+    expect(parseOverscan('pixels-12345').name).toBe('static-5')
+    expect(parseOverscan('pixels--5').name).toBe('static-5')
   })
 })
